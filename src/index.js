@@ -54,6 +54,8 @@ export default function () {
         const gradingSelect = gradingBox.nextElementSibling;
 
         gradingSelect.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+
             if (event.target.tagName === 'OPTION') {
                 gradingBox.value = event.target.value;
 
