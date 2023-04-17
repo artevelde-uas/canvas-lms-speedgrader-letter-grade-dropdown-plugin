@@ -1,5 +1,7 @@
 import { router, dom, api } from '@artevelde-uas/canvas-lms-app';
 
+import t from './i18n';
+
 import styles from './index.module.css';
 
 
@@ -61,18 +63,25 @@ export default function () {
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
 
+        // Expand select to encompass all options
+        const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
+        gradingSelect.style.height = `${height}px`;
+
         gradingSelect.addEventListener('mousedown', (event) => {
             event.preventDefault();
 
-            // If an option was selected, set the value and trigger a change event
-            if (event.target.tagName === 'OPTION') {
-                gradingBox.value = event.target.value;
-                gradingBox.dispatchEvent(new Event('change'));
-            }
+            // Only handle event if an option was pressed with the left mouse button
+            if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
+
+            // Set the value and trigger a change event
+            gradingBox.value = event.target.value;
+            gradingBox.dispatchEvent(new Event('change'));
         });
     });
 
     return {
-        ...require('../package.json')
+        ...require('../package.json'),
+        title: t('package.title'),
+        description: t('package.description')
     };
 }
