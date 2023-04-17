@@ -39,6 +39,27 @@ export default function () {
     router.onRoute('courses.gradebook.speedgrader', async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
+        if (gradingStandard === null) return;
+
+        const gradingBox = await dom.onElementReady('#grading-box-extended');
+
+        gradingBox.insertAdjacentHTML('afterend', `
+            <select multiple>
+                ${gradingStandard.grading_scheme.map(({ name }) => `
+                    <option value="${name}">${name}</option>
+                `).join('\n')}
+            </select>
+        `);
+
+        const gradingSelect = gradingBox.nextElementSibling;
+
+        gradingSelect.addEventListener('mousedown', (event) => {
+            if (event.target.tagName === 'OPTION') {
+                gradingBox.value = event.target.value;
+
+                gradingBox.dispatchEvent(new Event('change'));
+            }
+        });
     });
 
     return {
