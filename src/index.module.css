@@ -11,17 +11,17 @@
 }
 
 .gradingBox + .gradingSelect {
-  display: none;
   position: absolute;
+  visibility: hidden;
   box-sizing: border-box;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   box-shadow: 0 .1em .25em rgba(0, 0, 0, .25);
   padding: .5em 0;
 }
 
 .gradingBox:focus + .gradingSelect {
-  display: block;
+  visibility: visible;
 }
 
 .gradingSelect > option {

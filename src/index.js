@@ -63,6 +63,10 @@ export default function () {
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
 
+        // Expand select to encompass all options
+        const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
+        gradingSelect.style.height = `${height}px`;
+
         gradingSelect.addEventListener('mousedown', (event) => {
             event.preventDefault();
 
