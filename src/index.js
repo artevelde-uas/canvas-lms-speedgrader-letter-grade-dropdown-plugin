@@ -1,5 +1,7 @@
 import { router, dom, api } from '@artevelde-uas/canvas-lms-app';
 
+import t from './i18n';
+
 import styles from './index.module.css';
 
 
@@ -73,6 +75,8 @@ export default function () {
     });
 
     return {
-        ...require('../package.json')
+        ...require('../package.json'),
+        title: t('package.title'),
+        description: t('package.description')
     };
 }

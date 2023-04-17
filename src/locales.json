@@ -1,0 +1,14 @@
+{
+    "en": {
+        "package": {
+            "title": "Adds letter grade dropdown to Speedgrader",
+            "description": "Adds a convenient dropdown list to the speedgrader when using letter grades."
+        }
+    },
+    "nl": {
+        "package": {
+            "title": "Voegt keuzevak voor lettervorm toe aan Speedgrader",
+            "description": "Voegt keuzevak toe aan Speedgrader bij gebruik van beoordeling in lettervorm."
+        }
+    }
+}
