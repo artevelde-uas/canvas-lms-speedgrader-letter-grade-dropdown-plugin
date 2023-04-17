@@ -36,7 +36,7 @@ async function getGradingStandard(courseId, assignmentId) {
 }
 
 export default function () {
-    router.onRoute('courses.gradebook.speedgrader', async ({ courseId, assignmentId }) => {
+    router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
         if (gradingStandard === null) return;
