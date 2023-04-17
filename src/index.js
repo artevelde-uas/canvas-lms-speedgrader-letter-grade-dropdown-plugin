@@ -66,11 +66,12 @@ export default function () {
         gradingSelect.addEventListener('mousedown', (event) => {
             event.preventDefault();
 
-            // If an option was selected, set the value and trigger a change event
-            if (event.target.tagName === 'OPTION') {
-                gradingBox.value = event.target.value;
-                gradingBox.dispatchEvent(new Event('change'));
-            }
+            // Only handle event if an option was pressed with the left mouse button
+            if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
+
+            // Set the value and trigger a change event
+            gradingBox.value = event.target.value;
+            gradingBox.dispatchEvent(new Event('change'));
         });
     });
 
