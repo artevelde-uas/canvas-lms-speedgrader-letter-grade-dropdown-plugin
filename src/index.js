@@ -45,6 +45,7 @@ export default function () {
 
         const gradingBox = await dom.onElementReady('#grading-box-extended');
 
+        // Inject a select box after the grade input
         gradingBox.insertAdjacentHTML('afterend', `
             <select multiple>
                 ${gradingStandard.grading_scheme.map(({ name }) => `
@@ -63,9 +64,9 @@ export default function () {
         gradingSelect.addEventListener('mousedown', (event) => {
             event.preventDefault();
 
+            // If an option was selected, set the value and trigger a change event
             if (event.target.tagName === 'OPTION') {
                 gradingBox.value = event.target.value;
-
                 gradingBox.dispatchEvent(new Event('change'));
             }
         });
