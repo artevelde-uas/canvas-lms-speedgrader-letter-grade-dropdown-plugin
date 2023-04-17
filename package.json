@@ -1,6 +1,6 @@
 {
   "name": "@artevelde-uas/canvas-lms-speedgrader-letter-grade-dropdown-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Adds a convenient dropdown list to the speedgrader when using letter grades",
   "keywords": [
     "Canvas LMS"
