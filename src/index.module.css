@@ -1,0 +1,22 @@
+.gradingLabel {
+  position: relative;
+  width: 100%;
+}
+
+:global(#grading-box-extended).gradingBox {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: unset;
+}
+
+.gradingBox + .gradingSelect {
+  display: none;
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.gradingBox:focus + .gradingSelect {
+  display: block;
+}

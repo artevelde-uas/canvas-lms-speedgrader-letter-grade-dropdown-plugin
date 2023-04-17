@@ -1,5 +1,7 @@
 import { router, dom, api } from '@artevelde-uas/canvas-lms-app';
 
+import styles from './index.module.css';
+
 
 async function getGradingStandard(courseId, assignmentId) {
     const assignment = await api.get(`/courses/${courseId}/assignments/${assignmentId}`);
@@ -51,7 +53,12 @@ export default function () {
             </select>
         `);
 
+        const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
+
+        gradingLabel.classList.add(styles.gradingLabel);
+        gradingBox.classList.add(styles.gradingBox);
+        gradingSelect.classList.add(styles.gradingSelect);
 
         gradingSelect.addEventListener('mousedown', (event) => {
             event.preventDefault();
