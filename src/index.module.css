@@ -16,7 +16,6 @@
   box-sizing: border-box;
   width: 100%;
   z-index: 1;
-  overflow: hidden;
   box-shadow: 0 .1em .25em rgba(0, 0, 0, .25);
   padding: .5em 0;
 }
@@ -31,4 +30,8 @@
 
 .gradingSelect > option:hover {
   background-color: #eee;
+}
+
+.gradingSelect.fitOptions {
+  overflow: hidden;
 }

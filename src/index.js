@@ -39,7 +39,11 @@ async function getGradingStandard(courseId, assignmentId) {
     return null;
 }
 
-export default function ({ letterRegexp = /(?<letter>\w+) \(.+\)/ }) {
+export default function ({
+    fitOptions = false,
+    letterShortcut = false,
+    letterRegexp = /(?<letter>\w+) \(.+\)/
+}) {
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
@@ -64,8 +68,12 @@ export default function ({ letterRegexp = /(?<letter>\w+) \(.+\)/ }) {
         gradingSelect.classList.add(styles.gradingSelect);
 
         // Expand select to encompass all options
-        const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
-        gradingSelect.style.height = `${height}px`;
+        if (fitOptions) {
+            const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
+
+            gradingSelect.classList.add(styles.fitOptions);
+            gradingSelect.style.height = `${height}px`;
+        }
 
         gradingSelect.addEventListener('mousedown', event => {
             event.preventDefault();
@@ -78,25 +86,27 @@ export default function ({ letterRegexp = /(?<letter>\w+) \(.+\)/ }) {
             gradingBox.dispatchEvent(new Event('change'));
         });
 
-        gradingBox.addEventListener('keypress', event => {
-            // Only handle event if <Enter> key was pressed
-            if (event.key !== 'Enter') return;
+        if (letterShortcut) {
+            gradingBox.addEventListener('keypress', event => {
+                // Only handle event if <Enter> key was pressed
+                if (event.key !== 'Enter') return;
 
-            event.preventDefault();
+                event.preventDefault();
 
-            // Find option based on letter matcher regexp
-            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
-            const predicate = ({ value }) => (collator.compare(value.match(letterRegexp)?.groups.letter, gradingBox.value) === 0);
-            const option = Array.from(gradingSelect.options).find(predicate);
+                // Find option based on letter matcher regexp
+                const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
+                const predicate = ({ value }) => (collator.compare(value.match(letterRegexp)?.groups.letter, gradingBox.value) === 0);
+                const option = Array.from(gradingSelect.options).find(predicate);
 
-            // If option is found, set the value
-            if (option !== undefined) {
-                gradingBox.value = option.value;
-            }
+                // If option is found, set the value
+                if (option !== undefined) {
+                    gradingBox.value = option.value;
+                }
 
-            // Manually trigger a change event
-            gradingBox.dispatchEvent(new Event('change'));
-        });
+                // Manually trigger a change event
+                gradingBox.dispatchEvent(new Event('change'));
+            });
+        }
 
     });
 
