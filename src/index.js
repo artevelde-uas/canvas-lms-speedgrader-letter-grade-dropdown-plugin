@@ -87,12 +87,7 @@ export default function ({
         });
 
         if (letterShortcut) {
-            gradingBox.addEventListener('keypress', event => {
-                // Only handle event if <Enter> key was pressed
-                if (event.key !== 'Enter') return;
-
-                event.preventDefault();
-
+            function setGradingBoxValue() {
                 // Find option based on letter matcher regexp
                 const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
                 const predicate = ({ value }) => (collator.compare(value.match(letterRegexp)?.groups.letter, gradingBox.value) === 0);
@@ -102,8 +97,26 @@ export default function ({
                 if (option !== undefined) {
                     gradingBox.value = option.value;
                 }
+            }
+
+            gradingBox.addEventListener('keypress', event => {
+                // Only handle event if <Enter> key was pressed
+                if (event.key !== 'Enter') return;
+
+                // Set value of grading box based on letter matcher
+                setGradingBoxValue();
 
                 // Manually trigger a change event
+                event.preventDefault();
+                gradingBox.dispatchEvent(new Event('change'));
+            });
+
+            gradingBox.addEventListener('blur', event => {
+                // Set value of grading box based on letter matcher
+                setGradingBoxValue();
+
+                // Manually trigger a change event
+                event.preventDefault();
                 gradingBox.dispatchEvent(new Event('change'));
             });
         }
