@@ -20,7 +20,8 @@
   padding: .5em 0;
 }
 
-.gradingBox:focus + .gradingSelect {
+.gradingSelect.open,
+.gradingBox.alwaysOpenOnFocus:focus + .gradingSelect {
   visibility: visible;
 }
 

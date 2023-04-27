@@ -40,6 +40,7 @@ async function getGradingStandard(courseId, assignmentId) {
 }
 
 export default function ({
+    alwaysOpenOnFocus = false,
     fitOptions = false,
     letterShortcut = false,
     letterRegexp = /(?<letter>\w+) \(.+\)/
@@ -118,6 +119,25 @@ export default function ({
                 // Manually trigger a change event
                 event.preventDefault();
                 gradingBox.dispatchEvent(new Event('change'));
+            });
+        }
+
+        if (alwaysOpenOnFocus) {
+            gradingBox.classList.add(styles.alwaysOpenOnFocus);
+        } else {
+            gradingBox.addEventListener('click', event => {
+                gradingSelect.classList.toggle(styles.open);
+            });
+
+            gradingBox.addEventListener('blur', event => {
+                gradingSelect.classList.remove(styles.open);
+            });
+
+            gradingSelect.addEventListener('click', event => {
+                // Only handle event if an option was pressed with the left mouse button
+                if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
+
+                event.target.classList.remove(styles.open);
             });
         }
 
