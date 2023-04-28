@@ -106,36 +106,56 @@ export default function ({
             gradingBox.dispatchEvent(new Event('change'));
         });
 
-        gradingBox.addEventListener('keydown', event => {
-            // Only handle event if <Up> or <Down> key was pressed
-            if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
-
+        function up() {
             // Find currently selected option
             const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
-            // Key is <Up> and selection is not first option
-            if (event.key === 'ArrowUp' &&
-                selectedOption !== undefined &&
-                selectedOption !== gradingSelect.firstElementChild
-            ) {
-                selectedOption.selected = false;
-                selectedOption.previousElementSibling.selected = true;
-                gradingBox.value = selectedOption.previousElementSibling.value;
-            }
+            // Only if selection is not first option
+            if (selectedOption === undefined || selectedOption === gradingSelect.firstElementChild) return;
 
-            // Key is <Down> and selection is not last option
-            if (event.key === 'ArrowDown' &&
-                selectedOption !== gradingSelect.lastElementChild
-            ) {
-                // If no option is selected, select first one
-                if (selectedOption === undefined) {
-                    gradingSelect.firstElementChild.selected = true;
-                    gradingBox.value = gradingSelect.firstElementChild.value;
-                } else {
-                    selectedOption.selected = false;
-                    selectedOption.nextElementSibling.selected = true;
-                    gradingBox.value = selectedOption.nextElementSibling.value;
-                }
+            // Move selection up and set grading vanlue
+            selectedOption.selected = false;
+            selectedOption.previousElementSibling.selected = true;
+            gradingBox.value = selectedOption.previousElementSibling.value;
+        }
+
+        function down() {
+            // Find currently selected option
+            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+
+            // Only if selection is not last option
+            if (selectedOption === gradingSelect.lastElementChild) return;
+
+            // If no option is selected, select first one
+            if (selectedOption === undefined) {
+                gradingSelect.firstElementChild.selected = true;
+                gradingBox.value = gradingSelect.firstElementChild.value;
+            } else {
+                // Move selection down and set grading vanlue
+                selectedOption.selected = false;
+                selectedOption.nextElementSibling.selected = true;
+                gradingBox.value = selectedOption.nextElementSibling.value;
+            }
+        }
+
+        function handleWheel(event) {
+            if (event.deltaY < 0) {
+                up();
+            } else {
+                down();
+            }
+        }
+
+        // Handle mousewheel events
+        gradingBox.addEventListener('wheel', handleWheel);
+        gradingSelect.addEventListener('wheel', handleWheel);
+
+        // Handle <Up> and <Down> key presses
+        gradingBox.addEventListener('keydown', event => {
+            if (event.key === 'ArrowUp') {
+                up();
+            } else if (event.key === 'ArrowDown') {
+                down();
             }
         });
 
