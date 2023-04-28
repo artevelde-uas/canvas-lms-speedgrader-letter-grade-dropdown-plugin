@@ -26,6 +26,7 @@ async function getGradingStandard(courseId, assignmentId) {
             .get(`/accounts/${accountId}/grading_standards/${assignment.grading_standard_id}`)
             .catch(error => null);
 
+        // Grading standard found!
         if (gradingStandard !== null) {
             return gradingStandard;
         }
@@ -64,6 +65,7 @@ export default function ({
         const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
 
+        // Set styles
         gradingLabel.classList.add(styles.gradingLabel);
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
@@ -81,10 +83,12 @@ export default function ({
             const selectedOption = options.find(option => option.selected === true);
             const matchedOption = options.find(option => option.value === gradingBox.value);
 
+            // Unselect previous value
             if (selectedOption !== undefined) {
                 selectedOption.selected = false;
             }
 
+            // Select current value
             if (matchedOption !== undefined) {
                 matchedOption.selected = true;
             }
@@ -102,7 +106,7 @@ export default function ({
         });
 
         gradingBox.addEventListener('keydown', event => {
-            // Only handle event if <Up> or <Down> key were pressed
+            // Only handle event if <Up> or <Down> key was pressed
             if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
 
             // Find currently selected option
@@ -124,12 +128,12 @@ export default function ({
             ) {
                 // If no option is selected, select first one
                 if (selectedOption === undefined) {
-                        gradingSelect.firstElementChild.selected = true;
-                        gradingBox.value = gradingSelect.firstElementChild.value;
+                    gradingSelect.firstElementChild.selected = true;
+                    gradingBox.value = gradingSelect.firstElementChild.value;
                 } else {
-                        selectedOption.selected = false;
-                        selectedOption.nextElementSibling.selected = true;
-                        gradingBox.value = selectedOption.nextElementSibling.value;
+                    selectedOption.selected = false;
+                    selectedOption.nextElementSibling.selected = true;
+                    gradingBox.value = selectedOption.nextElementSibling.value;
                 }
             }
         });
@@ -189,7 +193,7 @@ export default function ({
             });
 
             gradingSelect.addEventListener('click', event => {
-                // Only handle event if an option was pressed with the left mouse button
+                // Only handle event if an option was clicked with the left mouse button
                 if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
 
                 gradingSelect.classList.remove(styles.open);
@@ -206,7 +210,7 @@ export default function ({
                 // Only handle event if <Down> key was pressed
                 if (event.key === 'Escape') {
                     gradingSelect.classList.remove(styles.open);
-        }
+                }
 
                 // Only handle event if <Down> key was pressed
                 if (event.key === 'ArrowDown' && event.altKey) {
