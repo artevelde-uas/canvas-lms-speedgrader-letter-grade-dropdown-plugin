@@ -194,8 +194,26 @@ export default function ({
 
                 gradingSelect.classList.remove(styles.open);
             });
+
+            gradingBox.addEventListener('keypress', event => {
+                // Only handle event if <Enter> or <Esc> key was pressed
+                if (event.key !== 'Enter') return;
+
+                gradingSelect.classList.remove(styles.open);
+            });
+
+            gradingBox.addEventListener('keydown', event => {
+                // Only handle event if <Down> key was pressed
+                if (event.key === 'Escape') {
+                    gradingSelect.classList.remove(styles.open);
         }
 
+                // Only handle event if <Down> key was pressed
+                if (event.key === 'ArrowDown' && event.altKey) {
+                    gradingSelect.classList.add(styles.open);
+                }
+            });
+        }
     });
 
     return {
