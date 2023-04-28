@@ -83,6 +83,21 @@ export default function ({
             gradingSelect.style.height = `${height}px`;
         }
 
+        // Set matching option on each grade change
+        gradingBox.addEventListener('change', event => {
+            const options = Array.from(gradingSelect.options);
+            const selectedOption = options.find(option => option.selected === true);
+            const matchedOption = options.find(option => option.value === gradingBox.value);
+
+            if (selectedOption !== undefined) {
+                selectedOption.selected = false;
+            }
+
+            if (matchedOption !== undefined) {
+                matchedOption.selected = true;
+            }
+        });
+
         gradingSelect.addEventListener('mousedown', event => {
             event.preventDefault();
 
