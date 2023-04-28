@@ -68,6 +68,13 @@ export default function ({
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
 
+        const matchedOption = Array.from(gradingSelect.options).find(option => option.value === gradingBox.value);
+
+        // Select the current option on page load
+        if (matchedOption !== undefined) {
+            matchedOption.selected = true;
+        }
+
         // Expand select to encompass all options
         if (fitOptions) {
             const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
