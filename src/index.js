@@ -192,7 +192,7 @@ export default function ({
                 // Only handle event if an option was pressed with the left mouse button
                 if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
 
-                event.target.classList.remove(styles.open);
+                gradingSelect.classList.remove(styles.open);
             });
         }
 
