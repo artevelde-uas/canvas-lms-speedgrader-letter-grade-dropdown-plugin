@@ -64,13 +64,14 @@ export default function ({
 
         const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
+        const gradingOptions = Array.from(gradingSelect.options);
 
         // Set styles
         gradingLabel.classList.add(styles.gradingLabel);
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
 
-        const matchedOption = Array.from(gradingSelect.options).find(option => option.value === gradingBox.value);
+        const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
         // Select the current option on page load
         if (matchedOption !== undefined) {
@@ -79,7 +80,7 @@ export default function ({
 
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
-            const options = Array.from(gradingSelect.options);
+            const options = gradingOptions;
             const selectedOption = options.find(option => option.selected === true);
             const matchedOption = options.find(option => option.value === gradingBox.value);
 
@@ -110,7 +111,7 @@ export default function ({
             if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
 
             // Find currently selected option
-            const selectedOption = Array.from(gradingSelect.options).find(option => option.value === gradingBox.value);
+            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
             // Key is <Up> and selection is not first option
             if (event.key === 'ArrowUp' &&
@@ -151,7 +152,7 @@ export default function ({
                 // Find option based on letter matcher regexp
                 const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
                 const predicate = ({ value }) => (collator.compare(value.match(letterRegexp)?.groups.letter, gradingBox.value) === 0);
-                const option = Array.from(gradingSelect.options).find(predicate);
+                const option = gradingOptions.find(predicate);
 
                 // If option is found, set the value
                 if (option !== undefined) {
