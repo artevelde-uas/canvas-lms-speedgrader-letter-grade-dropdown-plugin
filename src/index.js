@@ -156,8 +156,8 @@ export default function ({
             }
 
             gradingBox.addEventListener('keypress', event => {
-                // Only handle event if <Enter> key was pressed
-                if (event.key !== 'Enter') return;
+                // Only handle event if <Enter> or <Tab> key was pressed
+                if (!['Enter', 'Tab'].includes(event.key)) return;
 
                 // Set value of grading box based on letter matcher
                 setGradingBoxValue();
