@@ -29,7 +29,7 @@
   padding: .25em .5em;
 }
 
-.gradingSelect > option:hover {
+.gradingSelect > option:not(:checked):hover {
   background-color: #eee;
 }
 
