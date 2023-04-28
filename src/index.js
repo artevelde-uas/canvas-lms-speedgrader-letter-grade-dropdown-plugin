@@ -87,6 +87,39 @@ export default function ({
             gradingBox.dispatchEvent(new Event('change'));
         });
 
+        gradingBox.addEventListener('keydown', event => {
+            // Only handle event if <Up> or <Down> key were pressed
+            if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
+
+            // Find currently selected option
+            const selectedOption = Array.from(gradingSelect.options).find(option => option.value === gradingBox.value);
+
+            // Key is <Up> and selection is not first option
+            if (event.key === 'ArrowUp' &&
+                selectedOption !== undefined &&
+                selectedOption !== gradingSelect.firstElementChild
+            ) {
+                selectedOption.selected = false;
+                selectedOption.previousElementSibling.selected = true;
+                gradingBox.value = selectedOption.previousElementSibling.value;
+            }
+
+            // Key is <Down> and selection is not last option
+            if (event.key === 'ArrowDown' &&
+                selectedOption !== gradingSelect.lastElementChild
+            ) {
+                // If no option is selected, select first one
+                if (selectedOption === undefined) {
+                        gradingSelect.firstElementChild.selected = true;
+                        gradingBox.value = gradingSelect.firstElementChild.value;
+                } else {
+                        selectedOption.selected = false;
+                        selectedOption.nextElementSibling.selected = true;
+                        gradingBox.value = selectedOption.nextElementSibling.value;
+                }
+            }
+        });
+
         if (letterShortcut) {
             function setGradingBoxValue() {
                 // Find option based on letter matcher regexp
