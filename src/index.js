@@ -75,14 +75,6 @@ export default function ({
             matchedOption.selected = true;
         }
 
-        // Expand select to encompass all options
-        if (fitOptions) {
-            const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
-
-            gradingSelect.classList.add(styles.fitOptions);
-            gradingSelect.style.height = `${height}px`;
-        }
-
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
             const options = Array.from(gradingSelect.options);
@@ -141,6 +133,14 @@ export default function ({
                 }
             }
         });
+
+        // Expand select to encompass all options
+        if (fitOptions) {
+            const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
+
+            gradingSelect.classList.add(styles.fitOptions);
+            gradingSelect.style.height = `${height}px`;
+        }
 
         if (letterShortcut) {
             function setGradingBoxValue() {
