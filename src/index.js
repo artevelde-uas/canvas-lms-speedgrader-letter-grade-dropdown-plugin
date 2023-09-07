@@ -12,7 +12,7 @@ async function getGradingStandard(courseId, assignmentId) {
         .catch(error => null);
 
     // The grading standard is defined within the course itself
-    if (gradingStandard !== null) {
+    if (gradingStandard !== null && gradingStandard.errors === undefined) {
         return gradingStandard;
     }
 
@@ -27,7 +27,7 @@ async function getGradingStandard(courseId, assignmentId) {
             .catch(error => null);
 
         // Grading standard found!
-        if (gradingStandard !== null) {
+        if (gradingStandard !== null && gradingStandard.errors === undefined) {
             return gradingStandard;
         }
 
@@ -49,7 +49,11 @@ export default function ({
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
-        if (gradingStandard === null) return;
+        if (gradingStandard === null) {
+            console.error('Grading scheme not found');
+
+            return;
+        }
 
         const gradingBox = await dom.onElementReady('#grading-box-extended');
 
