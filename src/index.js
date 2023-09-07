@@ -12,7 +12,7 @@ async function getGradingStandard(courseId, assignmentId) {
         .catch(error => null);
 
     // The grading standard is defined within the course itself
-    if (gradingStandard !== null) {
+    if (gradingStandard !== null && gradingStandard.errors === undefined) {
         return gradingStandard;
     }
 
@@ -27,7 +27,7 @@ async function getGradingStandard(courseId, assignmentId) {
             .catch(error => null);
 
         // Grading standard found!
-        if (gradingStandard !== null) {
+        if (gradingStandard !== null && gradingStandard.errors === undefined) {
             return gradingStandard;
         }
 
@@ -49,7 +49,11 @@ export default function ({
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
-        if (gradingStandard === null) return;
+        if (gradingStandard === null) {
+            console.error('Grading scheme not found');
+
+            return;
+        }
 
         const gradingBox = await dom.onElementReady('#grading-box-extended');
 
@@ -113,7 +117,7 @@ export default function ({
             // Only if selection is not first option
             if (selectedOption === undefined || selectedOption === gradingSelect.firstElementChild) return;
 
-            // Move selection up and set grading vanlue
+            // Move selection up and set grading value
             selectedOption.selected = false;
             selectedOption.previousElementSibling.selected = true;
             gradingBox.value = selectedOption.previousElementSibling.value;
@@ -131,11 +135,20 @@ export default function ({
                 gradingSelect.firstElementChild.selected = true;
                 gradingBox.value = gradingSelect.firstElementChild.value;
             } else {
-                // Move selection down and set grading vanlue
+                // Move selection down and set grading value
                 selectedOption.selected = false;
                 selectedOption.nextElementSibling.selected = true;
                 gradingBox.value = selectedOption.nextElementSibling.value;
             }
+        }
+
+        function clear() {
+            // Find currently selected option
+            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+
+            // Clear selection and reset grading value
+            selectedOption.selected = false;
+            gradingBox.value = '';
         }
 
         function handleWheel(event) {
@@ -152,10 +165,16 @@ export default function ({
 
         // Handle <Up> and <Down> key presses
         gradingBox.addEventListener('keydown', event => {
-            if (event.key === 'ArrowUp') {
-                up();
-            } else if (event.key === 'ArrowDown') {
-                down();
+            switch (event.key) {
+                case 'ArrowUp':
+                    up();
+                    break;
+                case 'ArrowDown':
+                    down();
+                    break;
+                case 'Delete':
+                    clear();
+                    break;
             }
         });
 
@@ -228,12 +247,12 @@ export default function ({
             });
 
             gradingBox.addEventListener('keydown', event => {
-                // Only handle event if <Down> key was pressed
+                // Only handle event if <Esc> key was pressed
                 if (event.key === 'Escape') {
                     gradingSelect.classList.remove(styles.open);
                 }
 
-                // Only handle event if <Down> key was pressed
+                // Only handle event if <Alt> + <Down> key was pressed
                 if (event.key === 'ArrowDown' && event.altKey) {
                     gradingSelect.classList.add(styles.open);
                 }

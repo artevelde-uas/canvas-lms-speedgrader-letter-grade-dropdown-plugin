@@ -8,31 +8,31 @@
   box-sizing: border-box;
   width: 100%;
   height: unset;
-}
 
-.gradingBox + .gradingSelect {
-  position: absolute;
-  visibility: hidden;
-  box-sizing: border-box;
-  width: 100%;
-  z-index: 1;
-  box-shadow: 0 .1em .25em rgba(0, 0, 0, .25);
-  padding: .5em 0;
-}
+  & + .gradingSelect.open,
+  &.alwaysOpenOnFocus:focus + .gradingSelect {
+    visibility: visible;
+  }
 
-.gradingSelect.open,
-.gradingBox.alwaysOpenOnFocus:focus + .gradingSelect {
-  visibility: visible;
-}
+  & + .gradingSelect {
+    position: absolute;
+    visibility: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 1;
+    box-shadow: 0 .1em .25em rgba(0, 0, 0, .25);
+    padding: .5em 0;
 
-.gradingSelect > option {
-  padding: .25em .5em;
-}
+    & > option {
+      padding: .25em .5em;
 
-.gradingSelect > option:not(:checked):hover {
-  background-color: #eee;
-}
+      &:not(:checked):hover {
+        background-color: #eee;
+      }
+    }
 
-.gradingSelect.fitOptions {
-  overflow: hidden;
+    &.fitOptions {
+      overflow: hidden;
+    }
+  }
 }
