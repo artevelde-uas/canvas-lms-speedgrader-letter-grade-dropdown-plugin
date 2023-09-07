@@ -142,6 +142,15 @@ export default function ({
             }
         }
 
+        function clear() {
+            // Find currently selected option
+            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+
+            // Clear selection and reset grading value
+            selectedOption.selected = false;
+            gradingBox.value = '';
+        }
+
         function handleWheel(event) {
             if (event.deltaY < 0) {
                 up();
@@ -156,10 +165,16 @@ export default function ({
 
         // Handle <Up> and <Down> key presses
         gradingBox.addEventListener('keydown', event => {
-            if (event.key === 'ArrowUp') {
-                up();
-            } else if (event.key === 'ArrowDown') {
-                down();
+            switch (event.key) {
+                case 'ArrowUp':
+                    up();
+                    break;
+                case 'ArrowDown':
+                    down();
+                    break;
+                case 'Delete':
+                    clear();
+                    break;
             }
         });
 
