@@ -117,7 +117,7 @@ export default function ({
             // Only if selection is not first option
             if (selectedOption === undefined || selectedOption === gradingSelect.firstElementChild) return;
 
-            // Move selection up and set grading vanlue
+            // Move selection up and set grading value
             selectedOption.selected = false;
             selectedOption.previousElementSibling.selected = true;
             gradingBox.value = selectedOption.previousElementSibling.value;
@@ -135,7 +135,7 @@ export default function ({
                 gradingSelect.firstElementChild.selected = true;
                 gradingBox.value = gradingSelect.firstElementChild.value;
             } else {
-                // Move selection down and set grading vanlue
+                // Move selection down and set grading value
                 selectedOption.selected = false;
                 selectedOption.nextElementSibling.selected = true;
                 gradingBox.value = selectedOption.nextElementSibling.value;
@@ -247,12 +247,12 @@ export default function ({
             });
 
             gradingBox.addEventListener('keydown', event => {
-                // Only handle event if <Down> key was pressed
+                // Only handle event if <Esc> key was pressed
                 if (event.key === 'Escape') {
                     gradingSelect.classList.remove(styles.open);
                 }
 
-                // Only handle event if <Down> key was pressed
+                // Only handle event if <Alt> + <Down> key was pressed
                 if (event.key === 'ArrowDown' && event.altKey) {
                     gradingSelect.classList.add(styles.open);
                 }
