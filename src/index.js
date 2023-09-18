@@ -1,4 +1,4 @@
-import { router, dom, api } from '@artevelde-uas/canvas-lms-app';
+import { router, dom, api, ui } from '@artevelde-uas/canvas-lms-app';
 
 import t from './i18n';
 
@@ -56,6 +56,45 @@ export default function ({
         }
 
         const gradingBox = await dom.onElementReady('#grading-box-extended');
+
+        const infoButton = ui.createQuestionIcon(`
+            <div class="${styles.infoContent}">
+                <table class="${styles.infoKeys}">
+                    <caption class="screenreader-only">Keyboard shortcuts</caption>
+                    <thead>
+                        <tr>
+                            <th class="screenreader-only">Shortcut</th>
+                            <th class="screenreader-only">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th><kbd><i class="icon-arrow-up">Up</i></kbd> / <kbd><i class="icon-arrow-down">Down</i></kbd></th>
+                            <td>Move through the different grading options</td>
+                        </tr>
+                        <tr>
+                            <th><kbd>Enter</kdb></th>
+                            <td>Select grading option</td>
+                        </tr>
+                        <tr>
+                            <th><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">Down</i></kbd></th>
+                            <td>Open the drop-down menu</td>
+                        </tr>
+                        <tr>
+                            <th><kbd>Esc</kbd></th>
+                            <td>Close drop-down</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `, {
+            title: 'Keyboard shortcuts',
+            minheigth: 300,
+            minWidth: 500,
+            resizable: false
+        });
+
+        gradingBox.after(infoButton);
 
         // Inject a select box after the grade input
         gradingBox.insertAdjacentHTML('afterend', `
