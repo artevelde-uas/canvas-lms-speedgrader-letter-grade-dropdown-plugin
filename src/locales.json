@@ -3,12 +3,44 @@
         "package": {
             "title": "Adds letter grade dropdown to Speedgrader",
             "description": "Adds a convenient dropdown list to the speedgrader when using letter grades."
+        },
+        "info": {
+            "title": "Keyboard shortcuts",
+            "shortcut": "Shortcut",
+            "keys": {
+                "up": "Up",
+                "down": "Down"
+            },
+            "description": "Description",
+            "descriptions": {
+                "up-down": "Move through the different grading options",
+                "enter": "Confirm the selected grading option",
+                "delete": "Clear the current selection",
+                "alt-down": "Open the drop-down menu",
+                "escape": "Close the drop-down menu"
+            }
         }
     },
     "nl": {
         "package": {
             "title": "Voegt keuzevak voor lettervorm toe aan Speedgrader",
             "description": "Voegt keuzevak toe aan Speedgrader bij gebruik van beoordeling in lettervorm."
+        },
+        "info": {
+            "title": "Sneltoetsen",
+            "shortcut": "Sneltoets",
+            "keys": {
+                "up": "Omhoog",
+                "down": "Omlaag"
+            },
+            "description": "Omschrijving",
+            "descriptions": {
+                "up-down": "Beweeg door de verschillende scoring-opties",
+                "enter": "Bevestig de geselecteerde scoring-optie",
+                "delete": "Wis de huidige selectie",
+                "alt-down": "Open het keuzemenu",
+                "escape": "Sluit het keuzemenu"
+            }
         }
     }
 }

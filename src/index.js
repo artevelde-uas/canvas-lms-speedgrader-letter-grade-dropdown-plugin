@@ -77,39 +77,42 @@ export default function ({
         const infoButton = ui.createQuestionIcon(`
             <div class="${styles.infoContent}">
                 <table class="${styles.infoKeys}">
-                    <caption class="screenreader-only">Keyboard shortcuts</caption>
+                    <caption class="screenreader-only">${t('info.title')}</caption>
                     <thead>
                         <tr>
-                            <th class="screenreader-only">Shortcut</th>
-                            <th class="screenreader-only">Description</th>
+                            <th class="screenreader-only">${t('info.shortcut')}</th>
+                            <th class="screenreader-only">${t('info.omschrijving')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><kbd><i class="icon-arrow-up">Up</i></kbd> / <kbd><i class="icon-arrow-down">Down</i></kbd></td>
-                            <td>Move through the different grading options</td>
+                            <td>
+                                <kbd><i class="icon-arrow-up">${t('info.keys.up')}</i></kbd> /
+                                <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd>
+                            </td>
+                            <td>${t('info.descriptions.up-down')}</td>
                         </tr>
                         <tr>
                             <td><kbd>Enter</kdb></td>
-                            <td>Select grading option</td>
+                            <td>${t('info.descriptions.enter')}</td>
                         </tr>
                         <tr>
                             <td><kbd>Del</kbd></td>
-                            <td>Clear selection</td>
+                            <td>${t('info.descriptions.delete')}</td>
                         </tr>
                         <tr>
-                            <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">Down</i></kbd></td>
-                            <td>Open the drop-down menu</td>
+                            <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd></td>
+                            <td>${t('info.descriptions.alt-down')}</td>
                         </tr>
                         <tr>
                             <td><kbd>Esc</kbd></td>
-                            <td>Close drop-down</td>
+                            <td>${t('info.descriptions.escape')}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         `, {
-            title: 'Keyboard shortcuts',
+            title: t('info.title'),
             minheigth: 300,
             minWidth: 500,
             resizable: false
