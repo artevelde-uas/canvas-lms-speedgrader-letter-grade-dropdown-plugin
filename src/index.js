@@ -271,7 +271,6 @@ export default function ({
             setGradingBoxValue();
 
             // Manually trigger a change event
-            event.preventDefault();
             gradingBox.dispatchEvent(new Event('change'));
         });
 
@@ -280,7 +279,6 @@ export default function ({
             setGradingBoxValue();
 
             // Manually trigger a change event
-            event.preventDefault();
             gradingBox.dispatchEvent(new Event('change'));
         });
 
