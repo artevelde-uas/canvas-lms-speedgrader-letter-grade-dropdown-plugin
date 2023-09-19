@@ -193,8 +193,12 @@ export default function ({
             // Find currently selected option
             const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
-            // Clear selection and reset grading value
-            selectedOption.selected = false;
+            // Clear selection if found
+            if (selectedOption !== undefined) {
+                selectedOption.selected = false;
+            }
+
+            // Reset grading value
             gradingBox.value = '';
         }
 
