@@ -77,6 +77,10 @@ export default function ({
                             <td>Select grading option</td>
                         </tr>
                         <tr>
+                            <th><kbd>Del</kbd></th>
+                            <td>Clear selection</td>
+                        </tr>
+                        <tr>
                             <th><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">Down</i></kbd></th>
                             <td>Open the drop-down menu</td>
                         </tr>
