@@ -252,10 +252,10 @@ export default function ({
                 : ({ value }) => (collator.compare(value, gradingBox.value) === 0);
             const option = gradingOptions.find(predicate);
 
-            // If option is found, set the value
-            if (option !== undefined) {
-                gradingBox.value = option.value;
-            }
+            // Stop if no option was found
+            if (option === undefined) return;
+
+            gradingBox.value = option.value;
         }
 
         gradingBox.addEventListener('keypress', event => {
