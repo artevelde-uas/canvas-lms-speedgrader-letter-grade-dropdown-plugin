@@ -44,7 +44,7 @@ export default function ({
     alwaysOpenOnFocus = false,
     fitOptions = false,
     letterShortcut = false,
-    letterRegexp = /^\s*(?<letter>.+) \(.+\)\s*$/
+    letterRegexp = /^\s*(.+) \(.+\)\s*$/
 }) {
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
@@ -239,12 +239,14 @@ export default function ({
         }
 
         function setGradingBoxValue() {
-            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
+            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'base' });
             // Find option based on letter matching regexp if set
-            const predicate = ({ value }) => (
-                value = letterShortcut ? value.match(letterRegexp)?.groups.letter : value,
-                collator.compare(value, gradingBox.value) === 0
-            );
+            const predicate = letterShortcut
+                ? ({ value }) => (value
+                    .match(letterRegexp)
+                    .filter((value, index) => (index > 0 && typeof value === 'string'))
+                    .some(value => (collator.compare(value, gradingBox.value) === 0)))
+                : ({ value }) => (collator.compare(value, gradingBox.value) === 0);
             const option = gradingOptions.find(predicate);
 
             // If option is found, set the value
