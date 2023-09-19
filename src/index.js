@@ -238,40 +238,41 @@ export default function ({
             gradingSelect.style.height = `${height}px`;
         }
 
-        if (letterShortcut) {
-            function setGradingBoxValue() {
-                // Find option based on letter matcher regexp
-                const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
-                const predicate = ({ value }) => (collator.compare(value.match(letterRegexp)?.groups.letter, gradingBox.value) === 0);
-                const option = gradingOptions.find(predicate);
+        function setGradingBoxValue() {
+            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
+            // Find option based on letter matching regexp if set
+            const predicate = ({ value }) => (
+                value = letterShortcut ? value.match(letterRegexp)?.groups.letter : value,
+                collator.compare(value, gradingBox.value) === 0
+            );
+            const option = gradingOptions.find(predicate);
 
-                // If option is found, set the value
-                if (option !== undefined) {
-                    gradingBox.value = option.value;
-                }
+            // If option is found, set the value
+            if (option !== undefined) {
+                gradingBox.value = option.value;
             }
-
-            gradingBox.addEventListener('keypress', event => {
-                // Only handle event if <Enter> or <Tab> key was pressed
-                if (!['Enter', 'Tab'].includes(event.key)) return;
-
-                // Set value of grading box based on letter matcher
-                setGradingBoxValue();
-
-                // Manually trigger a change event
-                event.preventDefault();
-                gradingBox.dispatchEvent(new Event('change'));
-            });
-
-            gradingBox.addEventListener('blur', event => {
-                // Set value of grading box based on letter matcher
-                setGradingBoxValue();
-
-                // Manually trigger a change event
-                event.preventDefault();
-                gradingBox.dispatchEvent(new Event('change'));
-            });
         }
+
+        gradingBox.addEventListener('keypress', event => {
+            // Only handle event if <Enter> or <Tab> key was pressed
+            if (!['Enter', 'Tab'].includes(event.key)) return;
+
+            // Set value of grading box based on letter matcher
+            setGradingBoxValue();
+
+            // Manually trigger a change event
+            event.preventDefault();
+            gradingBox.dispatchEvent(new Event('change'));
+        });
+
+        gradingBox.addEventListener('blur', event => {
+            // Set value of grading box based on letter matcher
+            setGradingBoxValue();
+
+            // Manually trigger a change event
+            event.preventDefault();
+            gradingBox.dispatchEvent(new Event('change'));
+        });
 
         if (alwaysOpenOnFocus) {
             gradingBox.classList.add(styles.alwaysOpenOnFocus);
