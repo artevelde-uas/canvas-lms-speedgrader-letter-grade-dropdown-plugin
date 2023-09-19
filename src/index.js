@@ -132,9 +132,8 @@ export default function ({
 
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
-            const options = gradingOptions;
-            const selectedOption = options.find(option => option.selected === true);
-            const matchedOption = options.find(option => option.value === gradingBox.value);
+            const selectedOption = gradingOptions.find(option => option.selected === true);
+            const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
             // Unselect previous value
             if (selectedOption !== undefined) {
