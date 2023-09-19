@@ -17,7 +17,7 @@
     "locales/"
   ],
   "peerDependencies": {
-    "@artevelde-uas/canvas-lms-app": "^1.12.1"
+    "@artevelde-uas/canvas-lms-app": "^1.14.0"
   },
   "config": {
     "scope": {
