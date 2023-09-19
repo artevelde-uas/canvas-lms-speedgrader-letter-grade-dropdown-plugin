@@ -40,6 +40,12 @@
   }
 }
 
+.infoButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
 :global(.ui-dialog-content).infoContent {
   box-sizing: border-box;
   padding: 2rem;

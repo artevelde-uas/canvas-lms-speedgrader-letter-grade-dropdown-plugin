@@ -120,6 +120,7 @@ export default function ({
         gradingWrapper.classList.add(styles.gradingWrapper);
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
+        infoButton.classList.add(styles.infoButton);
 
         const gradingOptions = Array.from(gradingSelect.options);
         const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
