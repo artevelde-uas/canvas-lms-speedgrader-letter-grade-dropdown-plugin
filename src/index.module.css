@@ -1,6 +1,9 @@
 .gradingLabel {
-  position: relative;
   width: 100%;
+}
+
+.gradingWrapper {
+  position: relative;
 }
 
 :global(#grading-box-extended).gradingBox {

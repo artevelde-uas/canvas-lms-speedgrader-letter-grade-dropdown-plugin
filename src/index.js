@@ -94,8 +94,6 @@ export default function ({
             resizable: false
         });
 
-        gradingBox.after(infoButton);
-
         // Inject a select box after the grade input
         gradingBox.insertAdjacentHTML('afterend', `
             <select multiple>
@@ -107,13 +105,19 @@ export default function ({
 
         const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
-        const gradingOptions = Array.from(gradingSelect.options);
+        const gradingWrapper = document.createElement('div');
+
+        // Put dropdown inside a wrapper element
+        gradingBox.before(gradingWrapper);
+        gradingWrapper.append(gradingBox, gradingSelect, infoButton);
 
         // Set styles
         gradingLabel.classList.add(styles.gradingLabel);
+        gradingWrapper.classList.add(styles.gradingWrapper);
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
 
+        const gradingOptions = Array.from(gradingSelect.options);
         const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
 
         // Select the current option on page load
