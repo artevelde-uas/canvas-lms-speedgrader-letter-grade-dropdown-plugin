@@ -127,10 +127,12 @@ export default function ({
             return gradingOptions.find(option => option.value === gradingBox.value);
         }
 
-        const matchedOption = getMatchedOption();
-
         // Select the current option on page load
-        if (matchedOption !== undefined) {
+        selectCurrentOption: {
+            const matchedOption = getMatchedOption();
+
+            if (matchedOption === undefined) break selectCurrentOption;
+
             matchedOption.selected = true;
         }
 
