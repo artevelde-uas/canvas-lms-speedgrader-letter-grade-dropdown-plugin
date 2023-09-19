@@ -44,7 +44,7 @@ export default function ({
     alwaysOpenOnFocus = false,
     fitOptions = false,
     letterShortcut = false,
-    letterRegexp = /(?<letter>\w+) \(.+\)/
+    letterRegexp = /^\s*(?<letter>.+) \(.+\)\s*$/
 }) {
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
