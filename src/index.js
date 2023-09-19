@@ -263,9 +263,9 @@ export default function ({
             gradingBox.value = option.value;
         }
 
+        // Set correct grading when <Enter> key is pressed
         gradingBox.addEventListener('keypress', event => {
-            // Only handle event if <Enter> or <Tab> key was pressed
-            if (!['Enter', 'Tab'].includes(event.key)) return;
+            if (event.key !== 'Enter') return;
 
             // Set value of grading box based on letter matcher
             setGradingBoxValue();
