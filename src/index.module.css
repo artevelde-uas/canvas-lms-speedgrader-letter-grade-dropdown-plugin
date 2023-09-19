@@ -17,6 +17,7 @@
     visibility: visible;
   }
 
+  /* Add a hidden dropdown menu */
   & + .gradingSelect {
     position: absolute;
     visibility: hidden;
@@ -34,12 +35,14 @@
       }
     }
 
+    /* Hide scrollbars when dropdown is expanded to fit all options */
     &.fitOptions {
       overflow: hidden;
     }
   }
 }
 
+/* Put the icon inside the grading box */
 .infoButton {
   position: absolute;
   top: 0.5rem;
@@ -50,6 +53,7 @@
   box-sizing: border-box;
   padding: 2rem;
 
+  /* Make nice keyboard buttons */
   & kbd {
     display: inline-block;
     line-height: 1;
@@ -62,16 +66,19 @@
     font-family: inherit;
     font-weight: normal;
 
+    /* Hide the text inside the icons */
     & > i {
       display: inline !important;
       font-size: 0;
 
+      /* Make icons a bit smaller */
       &::before {
         font-size: 0.8rem;
       }
     }
   }
 
+  /* keyboard scortcuts list */
   & table.infoKeys {
     width: 100%;
 
