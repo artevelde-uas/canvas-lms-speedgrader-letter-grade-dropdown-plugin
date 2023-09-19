@@ -1,4 +1,4 @@
-import { router, dom, api } from '@artevelde-uas/canvas-lms-app';
+import { router, dom, api, ui } from '@artevelde-uas/canvas-lms-app';
 
 import t from './i18n';
 
@@ -44,17 +44,19 @@ export default function ({
     alwaysOpenOnFocus = false,
     fitOptions = false,
     letterShortcut = false,
-    letterRegexp = /(?<letter>\w+) \(.+\)/
+    letterRegexp = /^\s*(.+) \(.+\)\s*$/
 }) {
     router.onRoute(['courses.gradebook.speedgrader', 'courses.gradebook.speedgrader.student'], async ({ courseId, assignmentId }) => {
         const gradingStandard = await getGradingStandard(courseId, assignmentId);
 
+        // Stop if no grading scheme found
         if (gradingStandard === null) {
             console.error('Grading scheme not found');
 
             return;
         }
 
+        // Wait for the grading box element to appear
         const gradingBox = await dom.onElementReady('#grading-box-extended');
 
         // Inject a select box after the grade input
@@ -66,27 +68,93 @@ export default function ({
             </select>
         `);
 
+        const gradingWrapper = document.createElement('div');
         const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
         const gradingOptions = Array.from(gradingSelect.options);
 
+        // Create the grading info icon which opens a modal pop-up
+        const infoButton = ui.createQuestionIcon(`
+            <div class="${styles.infoContent}">
+                <table class="${styles.infoKeys}">
+                    <caption class="screenreader-only">${t('info.title')}</caption>
+                    <thead>
+                        <tr>
+                            <th class="screenreader-only">${t('info.shortcut')}</th>
+                            <th class="screenreader-only">${t('info.omschrijving')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <kbd><i class="icon-arrow-up">${t('info.keys.up')}</i></kbd> /
+                                <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd>
+                            </td>
+                            <td>${t('info.descriptions.up-down')}</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Enter</kdb></td>
+                            <td>${t('info.descriptions.enter')}</td>
+                        </tr>
+                        <tr>
+                            <td><kbd>Del</kbd></td>
+                            <td>${t('info.descriptions.delete')}</td>
+                        </tr>
+                        ${alwaysOpenOnFocus ? '' : `
+                            <tr>
+                                <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd></td>
+                                <td>${t('info.descriptions.alt-down')}</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>Esc</kbd></td>
+                                <td>${t('info.descriptions.escape')}</td>
+                            </tr>
+                        `}
+                    </tbody>
+                </table>
+                ${letterShortcut ? `
+                    <p>
+                        ${t('info.use_letter_shortcuts')}
+                    </p>
+                ` : ''}
+            </div>
+        `, {
+            title: t('info.title'),
+            minheigth: 300,
+            minWidth: 600,
+            resizable: false
+        });
+
+        // Put all drop-down elements inside a wrapper element
+        gradingBox.before(gradingWrapper);
+        gradingWrapper.append(gradingBox, gradingSelect, infoButton);
+
         // Set styles
         gradingLabel.classList.add(styles.gradingLabel);
+        gradingWrapper.classList.add(styles.gradingWrapper);
         gradingBox.classList.add(styles.gradingBox);
         gradingSelect.classList.add(styles.gradingSelect);
+        infoButton.classList.add(styles.infoButton);
 
-        const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
+        // Find the option that matches the current grading box value
+        function getMatchedOption() {
+            return gradingOptions.find(option => option.value === gradingBox.value);
+        }
 
         // Select the current option on page load
-        if (matchedOption !== undefined) {
+        selectCurrentOption: {
+            const matchedOption = getMatchedOption();
+
+            // Stop if no match found
+            if (matchedOption === undefined) break selectCurrentOption;
+
             matchedOption.selected = true;
         }
 
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
-            const options = gradingOptions;
-            const selectedOption = options.find(option => option.selected === true);
-            const matchedOption = options.find(option => option.value === gradingBox.value);
+            const selectedOption = gradingOptions.find(option => option.selected === true);
+            const matchedOption = getMatchedOption();
 
             // Unselect previous value
             if (selectedOption !== undefined) {
@@ -99,10 +167,12 @@ export default function ({
             }
         });
 
+        // Set correct value on each option click
         gradingSelect.addEventListener('mousedown', event => {
+            // Prevent click event to bubble op to the label
             event.preventDefault();
 
-            // Only handle event if an option was pressed with the left mouse button
+            // Only handle event if an option is pressed with the left mouse button
             if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
 
             // Set the value and trigger a change event
@@ -112,7 +182,7 @@ export default function ({
 
         function up() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
             // Only if selection is not first option
             if (selectedOption === undefined || selectedOption === gradingSelect.firstElementChild) return;
@@ -125,7 +195,7 @@ export default function ({
 
         function down() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
             // Only if selection is not last option
             if (selectedOption === gradingSelect.lastElementChild) return;
@@ -144,14 +214,21 @@ export default function ({
 
         function clear() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
-            // Clear selection and reset grading value
-            selectedOption.selected = false;
+            // Clear selection if found
+            if (selectedOption !== undefined) {
+                selectedOption.selected = false;
+            }
+
+            // Reset grading value
             gradingBox.value = '';
         }
 
         function handleWheel(event) {
+            // Prevent page scroll
+            event.preventDefault();
+
             if (event.deltaY < 0) {
                 up();
             } else {
@@ -178,6 +255,45 @@ export default function ({
             }
         });
 
+        // Set correct grading based on current input
+        function setGradingBoxValue() {
+            // Create accent- and case-insensitive collater
+            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'base' });
+            // Find option based on letter matching regexp if set
+            const predicate = letterShortcut
+                ? ({ value }) => (value
+                    .match(letterRegexp)
+                    .filter((value, index) => (index > 0 && typeof value === 'string'))
+                    .some(value => (collator.compare(value, gradingBox.value) === 0)))
+                : ({ value }) => (collator.compare(value, gradingBox.value) === 0);
+            const option = gradingOptions.find(predicate);
+
+            // Stop if no option is found
+            if (option === undefined) return;
+
+            gradingBox.value = option.value;
+        }
+
+        // Set correct grading when <Enter> key is pressed
+        gradingBox.addEventListener('keypress', event => {
+            if (event.key !== 'Enter') return;
+
+            // Set value of grading box based on letter matcher
+            setGradingBoxValue();
+
+            // Manually trigger a change event
+            gradingBox.dispatchEvent(new Event('change'));
+        });
+
+        // Set correct grading when the drop-down loses focus
+        gradingBox.addEventListener('blur', event => {
+            // Set value of grading box based on letter matcher
+            setGradingBoxValue();
+
+            // Manually trigger a change event
+            gradingBox.dispatchEvent(new Event('change'));
+        });
+
         // Expand select to encompass all options
         if (fitOptions) {
             const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
@@ -186,74 +302,41 @@ export default function ({
             gradingSelect.style.height = `${height}px`;
         }
 
-        function setGradingBoxValue() {
-            const collator = new Intl.Collator([], { usage: 'search', sensitivity: 'accent' });
-            // Find option based on letter matching regexp if set
-            const predicate = ({ value }) => (
-                value = letterShortcut ? value.match(letterRegexp)?.groups.letter : value,
-                collator.compare(value, gradingBox.value) === 0
-            );
-            const option = gradingOptions.find(predicate);
-
-            // If option is found, set the value
-            if (option !== undefined) {
-                gradingBox.value = option.value;
-            }
-        }
-
-        gradingBox.addEventListener('keypress', event => {
-            // Only handle event if <Enter> or <Tab> key was pressed
-            if (!['Enter', 'Tab'].includes(event.key)) return;
-
-            // Set value of grading box based on letter matcher
-            setGradingBoxValue();
-
-            // Manually trigger a change event
-            event.preventDefault();
-            gradingBox.dispatchEvent(new Event('change'));
-        });
-
-        gradingBox.addEventListener('blur', event => {
-            // Set value of grading box based on letter matcher
-            setGradingBoxValue();
-
-            // Manually trigger a change event
-            event.preventDefault();
-            gradingBox.dispatchEvent(new Event('change'));
-        });
-
         if (alwaysOpenOnFocus) {
             gradingBox.classList.add(styles.alwaysOpenOnFocus);
         } else {
+            // Toggle drop-down 'open' state on click
             gradingBox.addEventListener('click', event => {
                 gradingSelect.classList.toggle(styles.open);
             });
 
+            // Close drop-down when element loses focus
             gradingBox.addEventListener('blur', event => {
                 gradingSelect.classList.remove(styles.open);
             });
 
+            // Close drop-down when an option is clicked
             gradingSelect.addEventListener('click', event => {
-                // Only handle event if an option was clicked with the left mouse button
+                // Only handle event if an option is clicked with the left mouse button
                 if (event.target.tagName !== 'OPTION' || event.button !== 0) return;
 
                 gradingSelect.classList.remove(styles.open);
             });
 
+            // Close drop-down when <Enter> key is pressed
             gradingBox.addEventListener('keypress', event => {
-                // Only handle event if <Enter> or <Esc> key was pressed
                 if (event.key !== 'Enter') return;
 
                 gradingSelect.classList.remove(styles.open);
             });
 
             gradingBox.addEventListener('keydown', event => {
-                // Only handle event if <Esc> key was pressed
+                // Close drop-down when <Esc> key is pressed
                 if (event.key === 'Escape') {
                     gradingSelect.classList.remove(styles.open);
                 }
 
-                // Only handle event if <Alt> + <Down> key was pressed
+                // Open drop-down when <Alt>+<Down> key is pressed
                 if (event.key === 'ArrowDown' && event.altKey) {
                     gradingSelect.classList.add(styles.open);
                 }

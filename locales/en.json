@@ -1,0 +1,23 @@
+{
+    "info": {
+        "title": "Keyboard shortcuts",
+        "shortcut": "Shortcut",
+        "keys": {
+            "up": "Up",
+            "down": "Down"
+        },
+        "description": "Description",
+        "descriptions": {
+            "up-down": "Move through the different grading options",
+            "enter": "Confirm the selected grading option",
+            "delete": "Clear the current selection",
+            "alt-down": "Open the drop-down menu",
+            "escape": "Close the drop-down menu"
+        },
+        "use_letter_shortcuts": "<b>TIP:</b> You can also use letter shortcuts (i.e. type <kbd>A</kbd> to select the option 'A (Excellent)')."
+    },
+    "package": {
+        "title": "Adds letter grade dropdown to Speedgrader",
+        "description": "Adds a convenient dropdown list to the speedgrader when using letter grades."
+    }
+}
