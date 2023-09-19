@@ -51,7 +51,7 @@
 
 :global(.ui-dialog-content).infoContent {
   box-sizing: border-box;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem;
 
   /* Make nice keyboard buttons */
   & kbd {
@@ -81,6 +81,7 @@
   /* keyboard scortcuts list */
   & table.infoKeys {
     width: 100%;
+    margin: 1.5rem 0;
 
     & tr {
       border-bottom: 1px solid rgb(199, 205, 209);

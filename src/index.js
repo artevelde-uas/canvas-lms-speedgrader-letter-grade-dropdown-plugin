@@ -121,7 +121,7 @@ export default function ({
         `, {
             title: t('info.title'),
             minheigth: 300,
-            minWidth: 500,
+            minWidth: 600,
             resizable: false
         });
 
