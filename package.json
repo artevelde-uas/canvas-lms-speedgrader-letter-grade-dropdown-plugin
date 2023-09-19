@@ -13,7 +13,8 @@
   },
   "module": "src/index.js",
   "files": [
-    "src/"
+    "src/",
+    "locales/"
   ],
   "peerDependencies": {
     "@artevelde-uas/canvas-lms-app": "^1.12.1"
