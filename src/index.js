@@ -59,6 +59,20 @@ export default function ({
         // Wait for the grading box element to appear
         const gradingBox = await dom.onElementReady('#grading-box-extended');
 
+        // Inject a select box after the grade input
+        gradingBox.insertAdjacentHTML('afterend', `
+            <select multiple>
+                ${gradingStandard.grading_scheme.map(({ name }) => `
+                    <option value="${name}">${name}</option>
+                `).join('\n')}
+            </select>
+        `);
+
+        const gradingWrapper = document.createElement('div');
+        const gradingLabel = gradingBox.parentElement;
+        const gradingSelect = gradingBox.nextElementSibling;
+        const gradingOptions = Array.from(gradingSelect.options);
+
         // Create the grading info icon which opens a modal pop-up
         const infoButton = ui.createQuestionIcon(`
             <div class="${styles.infoContent}">
@@ -100,20 +114,6 @@ export default function ({
             minWidth: 500,
             resizable: false
         });
-
-        // Inject a select box after the grade input
-        gradingBox.insertAdjacentHTML('afterend', `
-            <select multiple>
-                ${gradingStandard.grading_scheme.map(({ name }) => `
-                    <option value="${name}">${name}</option>
-                `).join('\n')}
-            </select>
-        `);
-
-        const gradingLabel = gradingBox.parentElement;
-        const gradingSelect = gradingBox.nextElementSibling;
-        const gradingOptions = Array.from(gradingSelect.options);
-        const gradingWrapper = document.createElement('div');
 
         // Put all drop-down elements inside a wrapper element
         gradingBox.before(gradingWrapper);
@@ -245,14 +245,6 @@ export default function ({
             }
         });
 
-        // Expand select to encompass all options
-        if (fitOptions) {
-            const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
-
-            gradingSelect.classList.add(styles.fitOptions);
-            gradingSelect.style.height = `${height}px`;
-        }
-
         // Set correct grading based on current input
         function setGradingBoxValue() {
             // Create accent- and case-insensitive collater
@@ -291,6 +283,14 @@ export default function ({
             // Manually trigger a change event
             gradingBox.dispatchEvent(new Event('change'));
         });
+
+        // Expand select to encompass all options
+        if (fitOptions) {
+            const height = gradingSelect.scrollHeight + (gradingSelect.offsetHeight - gradingSelect.clientHeight);
+
+            gradingSelect.classList.add(styles.fitOptions);
+            gradingSelect.style.height = `${height}px`;
+        }
 
         if (alwaysOpenOnFocus) {
             gradingBox.classList.add(styles.alwaysOpenOnFocus);
