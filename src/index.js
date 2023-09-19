@@ -109,6 +109,7 @@ export default function ({
 
         const gradingLabel = gradingBox.parentElement;
         const gradingSelect = gradingBox.nextElementSibling;
+        const gradingOptions = Array.from(gradingSelect.options);
         const gradingWrapper = document.createElement('div');
 
         // Put dropdown inside a wrapper element
@@ -122,8 +123,11 @@ export default function ({
         gradingSelect.classList.add(styles.gradingSelect);
         infoButton.classList.add(styles.infoButton);
 
-        const gradingOptions = Array.from(gradingSelect.options);
-        const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
+        function getMatchedOption() {
+            return gradingOptions.find(option => option.value === gradingBox.value);
+        }
+
+        const matchedOption = getMatchedOption();
 
         // Select the current option on page load
         if (matchedOption !== undefined) {
@@ -133,7 +137,7 @@ export default function ({
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
             const selectedOption = gradingOptions.find(option => option.selected === true);
-            const matchedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const matchedOption = getMatchedOption();
 
             // Unselect previous value
             if (selectedOption !== undefined) {
@@ -159,7 +163,7 @@ export default function ({
 
         function up() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
             // Only if selection is not first option
             if (selectedOption === undefined || selectedOption === gradingSelect.firstElementChild) return;
@@ -172,7 +176,7 @@ export default function ({
 
         function down() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
             // Only if selection is not last option
             if (selectedOption === gradingSelect.lastElementChild) return;
@@ -191,7 +195,7 @@ export default function ({
 
         function clear() {
             // Find currently selected option
-            const selectedOption = gradingOptions.find(option => option.value === gradingBox.value);
+            const selectedOption = getMatchedOption();
 
             // Clear selection if found
             if (selectedOption !== undefined) {
