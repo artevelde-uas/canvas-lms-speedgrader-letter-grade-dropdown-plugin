@@ -207,6 +207,9 @@ export default function ({
         }
 
         function handleWheel(event) {
+            // Prevent page scroll
+            event.preventDefault();
+
             if (event.deltaY < 0) {
                 up();
             } else {
