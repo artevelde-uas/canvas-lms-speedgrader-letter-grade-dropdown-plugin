@@ -100,16 +100,23 @@ export default function ({
                             <td><kbd>Del</kbd></td>
                             <td>${t('info.descriptions.delete')}</td>
                         </tr>
-                        <tr>
-                            <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd></td>
-                            <td>${t('info.descriptions.alt-down')}</td>
-                        </tr>
-                        <tr>
-                            <td><kbd>Esc</kbd></td>
-                            <td>${t('info.descriptions.escape')}</td>
-                        </tr>
+                        ${alwaysOpenOnFocus ? '' : `
+                            <tr>
+                                <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">${t('info.keys.down')}</i></kbd></td>
+                                <td>${t('info.descriptions.alt-down')}</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>Esc</kbd></td>
+                                <td>${t('info.descriptions.escape')}</td>
+                            </tr>
+                        `}
                     </tbody>
                 </table>
+                ${letterShortcut ? `
+                    <p>
+                        ${t('info.use_letter_shortcuts')}
+                    </p>
+                ` : ''}
             </div>
         `, {
             title: t('info.title'),

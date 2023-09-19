@@ -18,7 +18,8 @@
                 "delete": "Clear the current selection",
                 "alt-down": "Open the drop-down menu",
                 "escape": "Close the drop-down menu"
-            }
+            },
+            "use_letter_shortcuts": "<b>TIP:</b> You can also use letter shortcuts (i.e. type <kbd>A</kbd> to select the option 'A (Excellent)')."
         }
     },
     "nl": {
@@ -40,7 +41,8 @@
                 "delete": "Wis de huidige selectie",
                 "alt-down": "Open het keuzemenu",
                 "escape": "Sluit het keuzemenu"
-            }
+            },
+            "use_letter_shortcuts": "<b>TIP:</b> Je kan ook letter-sneltoetsen gebruiken (bvb. type <kbd>A</kbd> om de optie 'A (Uitstekend)' te selecteren)."
         }
     }
 }
