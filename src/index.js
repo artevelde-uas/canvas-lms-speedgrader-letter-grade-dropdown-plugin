@@ -69,23 +69,23 @@ export default function ({
                     </thead>
                     <tbody>
                         <tr>
-                            <th><kbd><i class="icon-arrow-up">Up</i></kbd> / <kbd><i class="icon-arrow-down">Down</i></kbd></th>
+                            <td><kbd><i class="icon-arrow-up">Up</i></kbd> / <kbd><i class="icon-arrow-down">Down</i></kbd></td>
                             <td>Move through the different grading options</td>
                         </tr>
                         <tr>
-                            <th><kbd>Enter</kdb></th>
+                            <td><kbd>Enter</kdb></td>
                             <td>Select grading option</td>
                         </tr>
                         <tr>
-                            <th><kbd>Del</kbd></th>
+                            <td><kbd>Del</kbd></td>
                             <td>Clear selection</td>
                         </tr>
                         <tr>
-                            <th><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">Down</i></kbd></th>
+                            <td><kbd>Alt</kbd> + <kbd><i class="icon-arrow-down">Down</i></kbd></td>
                             <td>Open the drop-down menu</td>
                         </tr>
                         <tr>
-                            <th><kbd>Esc</kbd></th>
+                            <td><kbd>Esc</kbd></td>
                             <td>Close drop-down</td>
                         </tr>
                     </tbody>
