@@ -1,6 +1,7 @@
 import { router, dom, api, ui } from '@artevelde-uas/canvas-lms-app';
 
 import t from './i18n';
+import { parseLocaleNumber } from './util';
 
 import styles from './index.module.css';
 
@@ -274,9 +275,33 @@ export default function ({
             gradingBox.value = option.value;
         }
 
+        const gradingBoxPointsPossible = document.getElementById('grading-box-points-possible');
+        const gradingBoxCurrentScore = gradingBoxPointsPossible.querySelector('.score');
+        const pointPossibleRegex = /\(\s*\S+\s*\/\s*(?<pointsPossible>\S+)\s*\)/;
+        const pointPossibleString = gradingBoxPointsPossible.textContent.match(pointPossibleRegex)?.groups.pointsPossible;
+        const pointPossible = parseLocaleNumber(pointPossibleString);
+
+        function findLetterGradeByPoints(points) {
+            // Only handle actual numbers
+            if (!Number.isFinite(points)) return;
+
+            // Search the grading scheme starting with the lowest value
+            return gradingStandard.grading_scheme.findLast((element, index, array) => (
+                // First letter grade reached so it must be this one
+                (index === 0) ||
+                // Letter grade found if points are below threshold
+                (points < (array[index - 1].value * pointPossible))
+            ))?.name;
+        }
+
         // Set correct grading when <Enter> key is pressed
         gradingBox.addEventListener('keypress', event => {
             if (event.key !== 'Enter') return;
+
+            const currentScore = parseLocaleNumber(gradingBoxCurrentScore.textContent);
+
+            // Stop if the current score falls within the boundaries of the currently selected letter grade
+            if (gradingBox.value === findLetterGradeByPoints(currentScore)) return;
 
             // Set value of grading box based on letter matcher
             setGradingBoxValue();
@@ -287,6 +312,11 @@ export default function ({
 
         // Set correct grading when the drop-down loses focus
         gradingBox.addEventListener('blur', event => {
+            const currentScore = parseLocaleNumber(gradingBoxCurrentScore.textContent);
+
+            // Stop if the current score falls within the boundaries of the currently selected letter grade
+            if (gradingBox.value === findLetterGradeByPoints(currentScore)) return;
+
             // Set value of grading box based on letter matcher
             setGradingBoxValue();
 
