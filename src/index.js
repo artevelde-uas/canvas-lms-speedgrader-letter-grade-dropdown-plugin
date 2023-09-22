@@ -233,6 +233,8 @@ export default function ({
             // Prevent page scroll
             event.preventDefault();
 
+            gradingBox.focus();
+
             if (event.deltaY < 0) {
                 up();
             } else {
