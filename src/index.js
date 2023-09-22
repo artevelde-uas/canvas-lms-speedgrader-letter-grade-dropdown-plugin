@@ -152,6 +152,9 @@ export default function ({
             matchedOption.selected = true;
         }
 
+        // Set focus to the grading box on page load
+        gradingBox.focus();
+
         // Set matching option on each grade change
         gradingBox.addEventListener('change', event => {
             const selectedOption = gradingOptions.find(option => option.selected === true);
