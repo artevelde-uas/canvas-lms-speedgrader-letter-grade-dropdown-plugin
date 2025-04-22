@@ -16,6 +16,7 @@
     "src/",
     "locales/"
   ],
+  "packageManager": "yarn@4.9.1",
   "scripts": {
     "dev": "run-p serve watch",
     "watch": "webpack ./index.js --watch --progress --stats minimal --config webpack.config.js",
