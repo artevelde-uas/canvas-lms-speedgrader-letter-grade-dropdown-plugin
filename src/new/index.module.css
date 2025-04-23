@@ -1,0 +1,64 @@
+
+/* Re-arrange elements so that 'Assessment' and 'Status' are on seperate rows */
+.inlineBlockWrapper {
+  display: inline-flex !important;
+  direction: column;
+  align-items: end;
+  margin-bottom: 1.5rem;
+
+  & .flexWrapper {
+    display: block !important;
+
+    & .gradingWrapper {
+      position: relative;
+      width: 188%;
+    }
+    
+  }
+}
+
+.gradingWrapper {
+  & .gradingSelect {
+    position: absolute;
+    visibility: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 9999;
+    padding: 0;
+    border: 0.0625rem solid #8d959f;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.1em 0.1em rgba(0, 0, 0, 0.25);
+    font-family: 'LatoWeb', 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+
+    & > option {
+      padding: 0.5rem 0.75rem;
+      color: #273540;
+      font-family: inherit;
+      transition: ease-in-out 0.1s;
+      transition-property: color, background-color;
+
+      &:checked {
+        color: white;
+        background-color: #6a7883;
+      }
+
+      &:not(:checked):hover {
+        color: white;
+        background-color: #2b7abc;
+      }
+    }
+
+    &.open {
+      visibility: visible;
+    }
+
+    /* Hide scrollbars when dropdown is expanded to fit all options */
+    &.fitOptions {
+      overflow: hidden;
+    }
+  }
+
+  &:has(.gradingInput.alwaysOpenOnFocus:focus) .gradingSelect {
+    visibility: visible;
+  }
+}
